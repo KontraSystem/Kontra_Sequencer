@@ -7,6 +7,7 @@
       "esnext"
     ],
     "allowJs": true,
+    "noImplicitAny": false, 
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -21,6 +22,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "public"
   ]
 }

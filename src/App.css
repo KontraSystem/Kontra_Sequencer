@@ -24,6 +24,10 @@
   color: white;
 }
 
+.machine-back {
+  background-color: "beige",
+}
+
 .App-link {
   color: #61dafb;
 }
