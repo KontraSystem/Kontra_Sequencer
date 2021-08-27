@@ -1,110 +1,147 @@
 import * as Tone from "tone";
-
+import { Types } from "./types";
 export {
   samplers,
   percussions
+  // pitchShift
 } 
 
-const samplers = {
-    bass_drum: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/bd01.wav").toDestination(),
+const comp = new Tone.Compressor(-30, 3);
+
+// const pitchShift: Types.pitchShift = {
+//   bass_drum: new Tone.PitchShift().toDestination(),
+//   snare: new Tone.PitchShift().toDestination(),
+//   low_tom: new Tone.PitchShift().toDestination(),
+//   mid_tom: new Tone.PitchShift().toDestination(),
+//   hi_tom: new Tone.PitchShift().toDestination(),
+//   crash: new Tone.PitchShift().toDestination(),
+//   ride: new Tone.PitchShift().toDestination()
+// }
+
+const samplers: Types.samples = {
+    bass_drum: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/bd03.wav").toDestination(),
     snare: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/sd01.wav").toDestination(),
-    cl_hihat: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/hh01.wav").toDestination(),
+    cl_hihat: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/hh03.wav").toDestination(),
     op_hihat: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/oh01.wav").toDestination(),
-    low_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/lt01.wav").toDestination(),
-    mid_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/mt01.wav").toDestination(),
-    hi_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/ht01.wav").toDestination(),
+    low_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/lt04.wav").toDestination(),
+    mid_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/mt04.wav").toDestination(),
+    hi_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/ht04.wav").toDestination(),
     crash: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/cr01.wav").toDestination(),
     ride: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/rd01.wav").toDestination(),
     rim: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/rs01.wav").toDestination(),
     clap: new Tone.Player(process.env.PUBLIC_URL+"909_samples/cp01.wav").toDestination()
   }
 
-const percussions: Object[] = [
-      { 
-        label: "Total accent", 
-        value: "accent", 
-        knobs: [{label: "Accent", value: "accent", key: "accent"}] 
-      },
+const percussions: Types.Perc[] = [
+      // { 
+      //   label: "Total accent", 
+      //   value: ["accent"], 
+      //   knobs: [{label: "Accent", type: "accent", key: "accent"}] ,
+      //   percussion: 1,
+      //   button_labels: []
+      // },
       { 
         label: "Bass drum", 
-        value: "bass_drum", 
-        knobs: [
-        { 
-          label: "Tune", 
-          value: "bass_drum", 
-          key: "bass_drum"
-      }, 
-        { 
-          label: "Level", 
-          key: "bass_drum"
-      }, 
-        { 
-          label: "Attack", 
-          value: "bass_drum", 
-          key: "bass_drum"
-      }, 
-        { 
-          label: "Decay", 
-          value: "bass_drum", 
-          key: "bass_drum"
-      }] 
-      },
-      { 
-        label: "Snare drum", 
-        value: "snare", 
+        value: ["bass_drum"], 
         knobs: [
           { 
             label: "Tune", 
-            value: "snare", 
+            type: "tune", 
+            key: "bass_drum"
+          }, 
+          { 
+            label: "Level",
+            type: "level", 
+            key: "bass_drum"
+          }, 
+          { 
+            label: "Attack",
+            type: "attack",  
+            key: "bass_drum"
+          }, 
+          { 
+            label: "Decay",
+            type: "decay",  
+            key: "bass_drum"
+          }
+        ],
+        percussion: 1,
+        button_labels: [] 
+      },
+      { 
+        label: "Snare drum", 
+        value: ["snare"], 
+        knobs: [
+          { 
+            label: "Tune",
+            type: "tune",
             key: "snare"
           }, 
           { 
-            label: "Level", 
+            label: "Level",
+            type: "level", 
             key: "snare"
           }, 
           {
-            label: "Tone", 
-            value: "snare", 
+            label: "Tone",
+            type: "tone", 
             key: "snare"
           }, 
           {
-            label: "Snappy", 
-            value: "snare", 
+            label: "Snappy",
+            type: "snappy", 
             key: "snare"
           }
-        ] 
+        ],
+        percussion: 1,
+        button_labels: []  
       },
       { 
         label: "Low tom", 
-        value:"low_tom", 
-        knobs: [{ label: "Tune", value: "low_tom", key: "low_tom"}, { label: "Level", key: "low_tom"}, { label: "Decay", value: "low_tom", key: "low_tom"}] },
+        value: ["low_tom"], 
+        knobs: [{ label: "Tune", type: "tune", key: "low_tom"}, { label: "Level", type: "level", key: "low_tom"}, { label: "Decay", type: "decay", key: "low_tom"}],
+        percussion: 1,
+        button_labels: [] 
+      },
       { 
         label: "Mid tom", 
-        value:"mid_tom", 
-        knobs: [{ label: "Tune", value: "mid_tom", key: "mid_tom"}, { label: "Level", key: "mid_tom"}, { label: "Decay", value: "mid_tom", key: "mid_tom"}] },
+        value: ["mid_tom"], 
+        knobs: [{ label: "Tune", type: "tune", key: "mid_tom"}, { label: "Level", type: "level", key: "mid_tom"}, { label: "Decay", type: "decay", key: "mid_tom"}],
+        percussion: 1,
+        button_labels: [] 
+      },
       { 
         label: "Hi tom", 
-        value:"hi_tom", 
-        knobs: [{ label: "Tune", value: "hi_tom", key: "hi_tom"}, { label: "Level", key: "hi_tom"}, { label: "Decay", value: "hi_tom", key: "hi_tom"}] },
+        value: ["hi_tom"], 
+        knobs: [{ label: "Tune", type: "tune", key: "hi_tom"}, { label: "Level", type: "level", key: "hi_tom"}, { label: "Decay", type: "decay", key: "hi_tom"}],
+        percussion: 1,
+        button_labels: [] 
+      },
       { 
         label: "Rim", 
-        value:"rim", 
-        knobs: [{ label: "Level", key: "rim"}] },
+        value: ["rim"], 
+        knobs: [{ label: "Level", type: "level", key: "rim"}],
+        percussion: 1,
+        button_labels: [] 
+      },
       { 
         label: "Clap", 
-        value:"clap", 
-        knobs: [{ label: "Level", key: "clap"}] },
+        value: ["clap"], 
+        knobs: [{ label: "Level", type: "level", key: "clap"}] ,
+        percussion: 1,
+        button_labels: [] 
+      },
       {
         label: "Hi-hat",
         value: ["cl_hihat", "op_hihat"],
-        knobs: [{ label: "Level", key: "cl_hihat"}, { label: "Level", key: "op_hihat"}, { label: "CH decay", value: "cl_hihat", key: "cl_hihat"}, { label: "OH decay", value: "op_hihat", key: "op_hihat"}],
+        knobs: [{ label: "Level", type: "level", key: "cl_hihat"}, { label: "Level", type: "level", key: "op_hihat"}, { label: "CH decay", type: "decay", key: "cl_hihat"}, { label: "OH decay", type: "decay", key: "op_hihat"}],
         percussion: 2,
         button_labels: ["Closed Hi-hat", "Open Hi-hat"],
       },
       {
         label: "Cymbal",
         value: ["crash", "ride"],
-        knobs: [{ label: "Level", key: "crash"}, { label: "Level", key: "ride"}, { label: "Crash tune", value: "crash", key: "crash"}, { label: "Ride tune", value: "ride", key: "ride"}],
+        knobs: [{ label: "Level",  type: "level", key: "crash"}, { label: "Level",  type: "level", key: "ride"}, { label: "Crash tune",  type: "tune", key: "crash"}, { label: "Ride tune",  type: "tune", key: "ride"}],
         percussion: 2,
         button_labels: ["Crash", "Ride"],
       },

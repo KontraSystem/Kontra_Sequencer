@@ -3,52 +3,20 @@ import * as Tone from "tone";
 
 import Step from "./Step";
 import Grid from "@material-ui/core/Grid";
+import { Types } from "./types";
 
-type samples = {
-  bass_drum: Tone.Player,
-  snare: Tone.Player,
-  cl_hihat: Tone.Player,
-  op_hihat: Tone.Player,
-  low_tom: Tone.Player,
-  mid_tom: Tone.Player,
-  hi_tom: Tone.Player,
-  crash: Tone.Player,
-  ride: Tone.Player,
-  rim: Tone.Player,
-  clap: Tone.Player
-}
+const steps: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-interface PropsType {
-  tempo: number,
-  running: boolean,
-  action: string,
-  instrument: string,
-  percussions: samples
-}
-
-interface StateType {
-  currentStep: number
-}
-
-const steps: number[][] = [
-      [1, 2, 3, 4, 5, 6, 7, 8],
-      [9, 10, 11, 12, 13, 14, 15, 16],
-    ];
-
-
-const synth = new Tone.Synth().toDestination();
-
-
-class Tempo extends React.Component<PropsType, StateType>{
+class Tempo extends React.Component<Types.PropsType, Types.StateType>{
     private delay: number;
     public timer!: NodeJS.Timeout;
     private sound: any;
     private isRunning: boolean
-    public state: StateType
+    public state: Types.StateType
     private minute: number
     private accumulated: number
     private count: number
-    constructor(props: PropsType) {
+    constructor(props: Types.PropsType) {
         super(props);
         this.delay = 150;
         this.isRunning = false;
@@ -61,7 +29,7 @@ class Tempo extends React.Component<PropsType, StateType>{
         this.handleStep = this.handleStep.bind(this);
     }
 
-    componentDidUpdate(prevProps: PropsType) {
+    componentDidUpdate(prevProps: Types.PropsType) {
       const { tempo, running } = this.props;
       if(prevProps.tempo !== tempo) {
         const bpm: number = 60000/tempo/4;
@@ -103,15 +71,10 @@ class Tempo extends React.Component<PropsType, StateType>{
 
     private tick() {
       const { currentStep } = this.state;
-      // if(currentStep === 1 || currentStep === 5 || currentStep === 9 || currentStep === 13) {
-      //   synth.triggerAttackRelease("C4", "8n");
-      //   this.accumulated = this.accumulated + (this.delay * 4)
-      //   this.count = this.count + 1
-      //   console.log(this.count, this.accumulated)
-      //   if(this.accumulated >= this.minute) this.stop()
-      // }
-      this.setState((prevState) => {
-        if(currentStep === 16) {
+      const { stepsValue } = this.props;
+      console.log(currentStep);
+      this.setState((prevState: Types.StateType) => {
+        if(currentStep >= stepsValue) {
           return {
             currentStep: 1 
           }
@@ -126,31 +89,27 @@ class Tempo extends React.Component<PropsType, StateType>{
 
     handleStep() {
       const { action, instrument } = this.props;
-      return { action: action, instrument: instrument}
+      return { action: action, instrument: instrument }
     }
 
     render() {
       const { currentStep } = this.state;
-      const { action, instrument, percussions } = this.props;
+      const { action, instrument, percussions, decayValues, attackValue, stepsValue } = this.props;
 
-      return steps.map((row) => {
-      return (
-        <Grid
-          alignContent="space-between"
-          alignItems="stretch"
-          container
-          spacing={4}
-        >
-          {row.map((step) => {
+      return steps.map((step) => {
             return (
-              <Grid item xs={1}>
-                <Step percussions={percussions} action={action} currentStep={currentStep} step={step} instrument={instrument}/>
-              </Grid>
+                <Step 
+                  attackValue={attackValue} 
+                  decayValues={decayValues} 
+                  percussions={percussions} 
+                  action={action} 
+                  stepsValue={stepsValue}
+                  currentStep={currentStep} 
+                  step={step} 
+                  instrument={instrument}
+                />
             );
-          })}
-        </Grid>
-      );
-    });
+          })
     }
 
 }
