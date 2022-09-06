@@ -136,45 +136,43 @@ function App() {
   const renderPercussion = () => {
     return percussions.map((percussion: Types.Perc) => {
       return (
-        <Grid container item xs={1}>
-          <div style={instrumentDivRoot}>
-            <Typography variant="h6">{percussion["label"]}</Typography>
-            <Grid container item alignContent="center" alignItems="center">
-              {percussion["knobs"].map((knob: Types.Knobs, k: number) => {
-                return (
-                  <Grid key={percussion.label+"-"+knob.type} item xs={percussion["knobs"].length > 1 ? 6 : 12}>
-                    <Basic
-                      key={knob.type}
-                      diameter={40}
-                      min={knobTypes[knob.type].min}
-                      max={knobTypes[knob.type].max}
-                      step={1}
-                      value={knobTypes[knob.type].value[knob.key]}
-                      theme={{
-                        defaultColor: "#333",
-                        activeColor: "#f33",
-                      }}
-                      onValueChange={(val) => knobTypes[knob.type]["function"](val, knob.key)}
-                      ariaLabelledBy={knob + "-label"}
-                      jumpLimit={0.5}
-                    />
-                    <Typography key={percussion.label} variant="caption">{knob["label"]}</Typography>
-                  </Grid>
-                );
-              })}
-            </Grid>
-            {percussion["label"] !== "Total accent" ? (
-              percussion["percussion"] === 2 ? (
-                <Fragment>
-                  <button onClick={() => handleInstrument("step_sound", percussion.value[0])}>{percussion.button_labels[0]}</button>
-                  <button onClick={() => handleInstrument("step_sound", percussion.value[1])}>{percussion.button_labels[1]}</button>
-                </Fragment>
-              ) : (
-                <button onClick={() => handleInstrument("step_sound", percussion.value[0])}>{percussion.label}</button>
-              )
-            ) : null}
-          </div>
-        </Grid>
+        <div style={instrumentDivRoot}>
+          <Typography variant="h6">{percussion["label"]}</Typography>
+          <Grid container item alignContent="center" alignItems="center">
+            {percussion["knobs"].map((knob: Types.Knobs, k: number) => {
+              return (
+                <Grid key={percussion.label+"-"+knob.type} item xs={percussion["knobs"].length > 1 ? 6 : 12}>
+                  <Basic
+                    key={knob.type}
+                    diameter={60}
+                    min={knobTypes[knob.type].min}
+                    max={knobTypes[knob.type].max}
+                    step={1}
+                    value={knobTypes[knob.type].value[knob.key]}
+                    theme={{
+                      defaultColor: "#333",
+                      activeColor: "#f33",
+                    }}
+                    onValueChange={(val) => knobTypes[knob.type]["function"](val, knob.key)}
+                    ariaLabelledBy={knob + "-label"}
+                    jumpLimit={0.5}
+                  />
+                  <Typography key={percussion.label} variant="caption">{knob["label"]}</Typography>
+                </Grid>
+              );
+            })}
+          </Grid>
+          {percussion["label"] !== "Total accent" ? (
+            percussion["percussion"] === 2 ? (
+              <Fragment>
+                <button onClick={() => handleInstrument("step_sound", percussion.value[0])}>{percussion.button_labels[0]}</button>
+                <button onClick={() => handleInstrument("step_sound", percussion.value[1])}>{percussion.button_labels[1]}</button>
+              </Fragment>
+            ) : (
+              <button onClick={() => handleInstrument("step_sound", percussion.value[0])}>{percussion.label}</button>
+            )
+          ) : null}
+        </div>
       );
     });
   };
@@ -184,95 +182,121 @@ function App() {
   }
 
   return (
-    <div style={{ position: "relative" }}>
-      <Box m={2} style={machineBack}>
-        <Grid
-          classes={{ container: classes.baseGridRoot }}
-          container
-          spacing={4}
-        >
-          <div style={percussionRoot}>
-            <Grid
-              alignItems="stretch"
-              alignContent="stretch"
-              container
-              item
-              xs={12}
-              spacing={4}
-            >
-              {renderPercussion()}
-            </Grid>
-          </div>
-          <div style={sequencerRoot}>
-            <Grid container>
-              <Grid item>
-                <button onClick={handleClickStart}>Start</button>
-              </Grid>
-              <Grid item>
-                <Basic
-                  diameter={40}
-                  min={80}
-                  max={200}
-                  step={1}
-                  value={tempoValue}
-                  theme={{
-                    defaultColor: "#333",
-                    activeColor: "#f33",
-                  }}
-                  onValueChange={handleTempoChange}
-                  jumpLimit={0.5}
-                  ariaLabelledBy={"tempo-label"}
-                />
-                <Typography variant="caption">{"BPM"}</Typography>
-              </Grid>
-              <Grid item>
-                <Basic
-                  diameter={40}
-                  min={0}
-                  max={16}
-                  step={1}
-                  value={stepsValue}
-                  theme={{
-                    defaultColor: "#333",
-                    activeColor: "#f33",
-                  }}
-                  onValueChange={handleStepsCount}
-                  jumpLimit={0.5}
-                  ariaLabelledBy={"steps-label"}
-                />
-                <Typography  variant="caption">{"Steps"}</Typography>
-              </Grid>
-              <Grid item>
-                <Basic
-                  diameter={40}
-                  min={0}
-                  max={16}
-                  step={1}
-                  value={stepsValue}
-                  theme={{
-                    defaultColor: "#333",
-                    activeColor: "#f33",
-                  }}
-                  onValueChange={handleStepsCount}
-                  jumpLimit={0.5}
-                  ariaLabelledBy={"steps-label"}
-                />
-                <Typography  variant="caption">{"Swing"}</Typography>
-              </Grid>
-            </Grid>
-            <Tempo 
-              percussions={samplers} 
-              attackValue={attackValue} 
-              decayValues={decayValues} 
-              tempo={tempoValue}
-              stepsValue={stepsValue} 
-              running={running} 
-              action={action} 
-              instrument={instrument}
-            />
-          </div>
+    <div style={machineBack}>
+      <Grid
+        classes={{ container: classes.baseGridRoot }}
+        container
+        spacing={4}
+      >
+        <Grid container item xs={12} justifyContent="space-between">
+          <Typography variant="h1">Kontra Sequencer 909</Typography>
+          <Typography variant="h2">Rythem Composer</Typography> 
         </Grid>
-      </Box>
+        <Grid
+          container
+          item
+          xs={12}
+          spacing={4}
+          justifyContent="space-between"
+        >
+          {renderPercussion()}
+        </Grid>
+        <Grid container item xs={12} justifyContent="space-around">
+          <Grid item>
+            <button onClick={handleClickStart}>Start</button>
+          </Grid>
+          <Grid item>
+            <Typography>Tempo</Typography>
+            <Typography>{tempoValue}</Typography>
+          </Grid>
+          <Grid item>
+            <Basic
+              diameter={40}
+              min={80}
+              max={200}
+              step={1}
+              value={tempoValue}
+              theme={{
+                defaultColor: "#333",
+                activeColor: "#f33",
+              }}
+              onValueChange={handleTempoChange}
+              jumpLimit={0.5}
+              ariaLabelledBy={"tempo-label"}
+            />
+            <Typography variant="caption">{"BPM"}</Typography>
+          </Grid>
+          <Grid item>
+            <Basic
+              diameter={40}
+              min={0}
+              max={16}
+              step={1}
+              value={stepsValue}
+              theme={{
+                defaultColor: "#333",
+                activeColor: "#f33",
+              }}
+              onValueChange={handleStepsCount}
+              jumpLimit={0.5}
+              ariaLabelledBy={"steps-label"}
+            />
+            <Typography variant="caption">{"Steps"}</Typography>
+          </Grid>
+          <Grid item>
+            <Basic
+              diameter={40}
+              min={0}
+              max={16}
+              step={1}
+              value={stepsValue}
+              theme={{
+                defaultColor: "#333",
+                activeColor: "#f33",
+              }}
+              onValueChange={handleStepsCount}
+              jumpLimit={0.5}
+              ariaLabelledBy={"steps-label"}
+            />
+            <Typography  variant="caption">{"Swing"}</Typography>
+          </Grid>
+          <Grid item>
+            <Basic
+              diameter={40}
+              min={0}
+              max={16}
+              step={1}
+              value={stepsValue}
+              theme={{
+                defaultColor: "#333",
+                activeColor: "#f33",
+              }}
+              onValueChange={handleStepsCount}
+              jumpLimit={0.5}
+              ariaLabelledBy={"steps-label"}
+            />
+            <Typography  variant="caption">{"Master Volume"}</Typography>
+          </Grid>
+        </Grid>
+        <Grid 
+          container 
+          spacing={4} 
+          item 
+          xs={12}
+          justifyContent="space-around"
+        >
+          <Tempo 
+            percussions={samplers} 
+            attackValue={attackValue} 
+            decayValues={decayValues} 
+            tempo={tempoValue}
+            stepsValue={stepsValue} 
+            running={running} 
+            action={action} 
+            instrument={instrument}
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 }
@@ -281,48 +305,24 @@ export default App;
 
 const useStyle = makeStyles((theme) => ({
   baseGridRoot: {
-    position: "relative",
-    padding: "20px",
-  },
-  sequencerRoot: {
-    position: "relative",
-    top: "350px",
-    left: "200px",
+    display: "flex",
+    alignContent: "center",
+    margin: "auto",
+    width: "60%"
   },
 }));
 
 const buttonStyle: CSS.Properties = {};
 
 const machineBack: CSS.Properties = {
+  position: "absolute", 
+  height: "100%", 
+  width: "100%",
   backgroundColor: "beige",
-  position: "relative",
-  display: "block",
-  top: "150px",
-  bottom: 0,
-  left: "50px",
-  right: 0,
-  height: "600px",
-  width: "1700px",
-};
-
-const sequencerRoot: CSS.Properties = {
-  position: "relative",
-  top: "250px",
-  left: "10px",
-  width: "2000px",
-};
-
-const percussionRoot: CSS.Properties = {
-  position: "relative",
-  top: "20px",
-  left: "20px",
-  width: "2000px",
-  height: "150px",
+  display: "flex",
 };
 
 const instrumentDivRoot: CSS.Properties = {
-  width: "max-content",
-  height: "150px",
   textAlign: "center",
   borderLeftStyle: "solid",
   borderRightStyle: "solid",

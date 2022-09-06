@@ -46,37 +46,36 @@ export default function Step(props: Types.StepProps) {
 }
 
 const stepStyle: CSS.Properties = {
-    height: "60px",
-    width: "60px",
-    margin: "10px",
-    marginLeft: "20px",
-    marginRight: "20px",
-    borderRadius:"initial"
+  height: "1404%",
+  width: "5%",
+  borderRadius:"initial"
 }
 
 const chooseStepStyle: CSS.Properties = {
-    width:"30px",
-    height: "30px",
-    backgroundColor: "red",
-    position: "relative",
-    left: "10px",
-    top: "5px"
+  width: "10%",
+  height: "70%",
+  backgroundColor: "red",
+  position: "relative",
+  left: "10px",
+  top: "5px"
 }
 
 const powerStyle: CSS.Properties = {
-    width:"30px",
-    height: "30px",
-    backgroundColor: "yellow",
-    position: "relative",
-    left: "10px",
-    top: "5px"
+  width: "10%",
+  height: "70%",
+  display: "flex",
+  backgroundColor: "yellow",
+  position: "relative",
+  left: "10px",
+  top: "5px"
 }
 
 const currentStepPowerStyle: CSS.Properties = {
-    width:"30px",
-    height: "30px",
-    backgroundColor: "orange",
-    position: "relative",
-    left: "10px",
-    top: "5px"
+  width: "10%",
+  height: "70%",
+  display: "flex",
+  backgroundColor: "orange",
+  position: "relative",
+  left: "10px",
+  top: "5px"
 }
