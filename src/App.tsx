@@ -6,10 +6,12 @@ import "./App.css";
 import { Basic } from "react-dial-knob";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import { makeStyles, Typography } from "@material-ui/core";
-
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 
 import Tempo from "./Tempo";
+import Midsection from "./Midsection";
 import { samplers, percussions } from "./Percussions";
 import { Types } from "./types";
 
@@ -65,6 +67,7 @@ function App() {
   const [running, setRunning] = useState(false);
   const [action, setAction] = useState("");
   const [instrument, setInstrument] = useState("");
+  const [clearValue, setClearValue] = useState(false);
 
   const adjustLevel = (volumeValue: number, percussion: string ) => {
       setLevelValues({
@@ -133,6 +136,10 @@ function App() {
     setStepsValue(val)
   }
 
+  const handleClearValues = () => {
+    setClearValue(!clearValue)
+  }
+
   const renderPercussion = () => {
     return percussions.map((percussion: Types.Perc) => {
       return (
@@ -144,7 +151,7 @@ function App() {
                 <Grid key={percussion.label+"-"+knob.type} item xs={percussion["knobs"].length > 1 ? 6 : 12}>
                   <Basic
                     key={knob.type}
-                    diameter={60}
+                    diameter={30}
                     min={knobTypes[knob.type].min}
                     max={knobTypes[knob.type].max}
                     step={1}
@@ -190,7 +197,7 @@ function App() {
       >
         <Grid container item xs={12} justifyContent="space-between">
           <Typography variant="h1">Kontra Sequencer 909</Typography>
-          <Typography variant="h2">Rythem Composer</Typography> 
+          <Typography variant="h2">Rhythm Composer</Typography> 
         </Grid>
         <Grid
           container
@@ -201,83 +208,13 @@ function App() {
         >
           {renderPercussion()}
         </Grid>
-        <Grid container item xs={12} justifyContent="space-around">
-          <Grid item>
-            <button onClick={handleClickStart}>Start</button>
-          </Grid>
-          <Grid item>
-            <Typography>Tempo</Typography>
-            <Typography>{tempoValue}</Typography>
-          </Grid>
-          <Grid item>
-            <Basic
-              diameter={40}
-              min={80}
-              max={200}
-              step={1}
-              value={tempoValue}
-              theme={{
-                defaultColor: "#333",
-                activeColor: "#f33",
-              }}
-              onValueChange={handleTempoChange}
-              jumpLimit={0.5}
-              ariaLabelledBy={"tempo-label"}
-            />
-            <Typography variant="caption">{"BPM"}</Typography>
-          </Grid>
-          <Grid item>
-            <Basic
-              diameter={40}
-              min={0}
-              max={16}
-              step={1}
-              value={stepsValue}
-              theme={{
-                defaultColor: "#333",
-                activeColor: "#f33",
-              }}
-              onValueChange={handleStepsCount}
-              jumpLimit={0.5}
-              ariaLabelledBy={"steps-label"}
-            />
-            <Typography variant="caption">{"Steps"}</Typography>
-          </Grid>
-          <Grid item>
-            <Basic
-              diameter={40}
-              min={0}
-              max={16}
-              step={1}
-              value={stepsValue}
-              theme={{
-                defaultColor: "#333",
-                activeColor: "#f33",
-              }}
-              onValueChange={handleStepsCount}
-              jumpLimit={0.5}
-              ariaLabelledBy={"steps-label"}
-            />
-            <Typography  variant="caption">{"Swing"}</Typography>
-          </Grid>
-          <Grid item>
-            <Basic
-              diameter={40}
-              min={0}
-              max={16}
-              step={1}
-              value={stepsValue}
-              theme={{
-                defaultColor: "#333",
-                activeColor: "#f33",
-              }}
-              onValueChange={handleStepsCount}
-              jumpLimit={0.5}
-              ariaLabelledBy={"steps-label"}
-            />
-            <Typography  variant="caption">{"Master Volume"}</Typography>
-          </Grid>
-        </Grid>
+        <Midsection
+          tempoValue={tempoValue}
+          stepsValue={stepsValue}
+          handleClickStart={handleClickStart}
+          handleTempoChange={handleTempoChange}
+          handleStepsCount={handleStepsCount}
+        />
         <Grid 
           container 
           spacing={4} 
@@ -285,16 +222,39 @@ function App() {
           xs={12}
           justifyContent="space-around"
         >
-          <Tempo 
-            percussions={samplers} 
-            attackValue={attackValue} 
-            decayValues={decayValues} 
-            tempo={tempoValue}
-            stepsValue={stepsValue} 
-            running={running} 
-            action={action} 
-            instrument={instrument}
-          />
+          <Grid classes={{ container: classes.controlDivRoot }} container item xs={2} spacing={2}>
+              <Grid item>
+                <Button variant="contained" color="secondary">{"Scale"}</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary">{"Shift"}</Button>
+              </Grid>
+              <Grid item>
+                <Button onClick={handleClearValues} variant="contained" color="secondary">{"Clear"}</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary">{"Last Step"}</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary">{"Shuffle/Flam"}</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary">{"Instrument Select"}</Button>
+              </Grid>
+          </Grid>
+          <Grid container item xs={10}>
+            <Tempo 
+              percussions={samplers} 
+              attackValue={attackValue} 
+              decayValues={decayValues} 
+              tempo={tempoValue}
+              stepsValue={stepsValue} 
+              running={running} 
+              action={action} 
+              instrument={instrument}
+              clearValue={clearValue}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </div>
@@ -310,6 +270,11 @@ const useStyle = makeStyles((theme) => ({
     margin: "auto",
     width: "60%"
   },
+  controlDivRoot: {
+    display: "flex",
+    borderRadius: "2px",
+    borderStyle: "solid"
+  }
 }));
 
 const buttonStyle: CSS.Properties = {};
@@ -321,6 +286,8 @@ const machineBack: CSS.Properties = {
   backgroundColor: "beige",
   display: "flex",
 };
+
+
 
 const instrumentDivRoot: CSS.Properties = {
   textAlign: "center",

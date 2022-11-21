@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
 import * as Tone from "tone";
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import CSS from "csstype";
 import { Types } from "./types";
 
 export default function Step(props: Types.StepProps) {
   const [stepInstruments, setStepInstruments] = useState<Types.IStepInstrument>([]);
-    const { step, currentStep, action, instrument, percussions, decayValues, attackValue, stepsValue } = props;
+    const { step, currentStep, action, instrument, percussions, decayValues, attackValue, stepsValue, clear } = props;
     useEffect(() => {
 
       if(isCurrentStep() && stepsValue >= step) {
         stepInstruments.forEach(stepInstrument => {
-          // console.log(stepInstrument)
-          const offsetValue = attackValue[stepInstrument] ? attackValue[stepInstrument] / 1000 : undefined
-          const durationValue = decayValues[stepInstrument] ? decayValues[stepInstrument] / 1000 : undefined
-          percussions[stepInstrument].start(undefined, offsetValue, durationValue)
+          console.log(stepInstrument, percussions[stepInstrument].loaded)
+          if(percussions[stepInstrument].loaded) {
+            const offsetValue = attackValue[stepInstrument] ? attackValue[stepInstrument] / 1000 : undefined
+            const durationValue = decayValues[stepInstrument] ? decayValues[stepInstrument] / 1000 : undefined
+            percussions[stepInstrument].start(undefined, offsetValue, durationValue)
+          }
         })
       }
     }, [currentStep])
+
+    useEffect(() => {
+      setStepInstruments([])
+    }, [clear])
 
     const isCurrentStep = () => {
       return step === currentStep;
@@ -37,45 +43,61 @@ export default function Step(props: Types.StepProps) {
     }
 
     return (
-        <button onClick={handleAction} style={stepStyle}>
+        <div style={divStyle}>
+          <Typography>{step}</Typography>
+          <button onClick={handleAction} style={step % 4 === 1 ? stepFourStyle : stepStyle}>
             <div style={ !(stepsValue >= step) ? chooseStepStyle : action === "" ? isCurrentStep() ? currentStepPowerStyle : powerStyle : !stepInstruments.includes(instrument) ? chooseStepStyle : powerStyle}>
             </div>
-        </button>
+          </button>
+        </div>
     )
 
 }
 
-const stepStyle: CSS.Properties = {
-  height: "1404%",
+const divStyle: CSS.Properties = {
   width: "5%",
+  textAlign: "center"
+}
+
+const stepStyle: CSS.Properties = {
+  width: "100%",
+  height: "30%",
   borderRadius:"initial"
 }
 
+const stepFourStyle: CSS.Properties = {
+  width: "100%",
+  height: "30%",
+  borderRadius: "initial",
+  borderColor: "black",
+  borderBottomStyle: "solid"
+}
+
 const chooseStepStyle: CSS.Properties = {
-  width: "10%",
-  height: "70%",
+  width: "40%",
+  height: "20%",
   backgroundColor: "red",
   position: "relative",
-  left: "10px",
-  top: "5px"
+  left: "30%",
+  top: "40%"
 }
 
 const powerStyle: CSS.Properties = {
-  width: "10%",
-  height: "70%",
+  width: "40%",
+  height: "20%",
   display: "flex",
   backgroundColor: "yellow",
   position: "relative",
-  left: "10px",
-  top: "5px"
+  left: "30%",
+  top: "40%"
 }
 
 const currentStepPowerStyle: CSS.Properties = {
-  width: "10%",
-  height: "70%",
+  width: "40%",
+  height: "20%",
   display: "flex",
   backgroundColor: "orange",
   position: "relative",
-  left: "10px",
-  top: "5px"
+  left: "30%",
+  top: "40%"
 }

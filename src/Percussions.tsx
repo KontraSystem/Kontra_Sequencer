@@ -19,8 +19,9 @@ const comp = new Tone.Compressor(-30, 3);
 // }
 
 const samplers: Types.samples = {
-    bass_drum: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/bd03.wav").toDestination(),
-    snare: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/sd01.wav").toDestination(),
+    bass_drum: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/bd01.wav").toDestination(),
+    bass_drum2: new Tone.Player("http://localhost:3005/sounds/15").toDestination(),
+    snare: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/sd02.wav").toDestination(),
     cl_hihat: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/hh03.wav").toDestination(),
     op_hihat: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/oh01.wav").toDestination(),
     low_tom: new Tone.Player(process.env.PUBLIC_URL+"/909_samples/lt04.wav").toDestination(),

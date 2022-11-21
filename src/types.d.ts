@@ -42,7 +42,16 @@ export module Types {
     percussions: samples,
     decayValues: KnobDecay,
     attackValue: KnobAttack,
-    stepsValue: number
+    stepsValue: number,
+    clear: boolean
+  }
+
+  type MidsectionProps = {
+    tempoValue: number,
+    stepsValue: number,
+    handleClickStart: () => void,
+    handleStepsCount: (val: number) => void,
+    handleTempoChange: (val: number) => void,
   }
 
   type IStepInstrument = string[]
@@ -55,7 +64,8 @@ export module Types {
     percussions: samples,
     decayValues: KnobDecay,
     attackValue: KnobAttack,
-    stepsValue: number
+    stepsValue: number,
+    clearValue: boolean
   }
 
   interface StateType {
